@@ -1,7 +1,18 @@
-import random
+word = []
+separator = '' 
+joined = ('') 
+def setup():
+    size(1000,1000)
 
-word_list = []
-
-word = input("What is your word?: ")
-
-word_list = word + word_list
+def draw():
+    background(0)
+    
+def keyTyped():
+    word.append(key)
+    
+    joined = separator.join(word)
+    print(joined)
+def keyPressed():
+    global joined
+    if key == ENTER:   
+        print(joined)
