@@ -1,42 +1,63 @@
-joined = ''
+word = ''
+guess = ''
 mode = 1
+
 result = ''
 def setup():
     size(1000,1000)
 
 def draw():
-    global mode, result
+    global mode, result,guess
     if mode == 1:
         background(0)
+        
         fill(255)
         rect(600,450,300,100)    
         fill(0)
         textSize(26)
-        text(joined,650,500)
+        text(word,650,500)
+        fill(255)
+        text("Please enter a word",625,430)
+
     
     elif mode == 3:
         background(255)
-        joined_list = list(joined)
-        for x in range(len(joined_list)-1):
-            if joined_list[x] == " ":
+        word_list = list(word)
+        for x in range(len(word_list)-1):
+            if word_list[x] == " ":
                 result = result + "  "
             else:
                 result = result + "_ "
-            
-            
-        print(result)
-        mode = 0
+         
+        fill(0)       
+        text(result,450,800)
+        mode = 4
         
         
     
     
 def keyTyped():
-    global joined
-    joined = joined + str(key)
-    if key == BACKSPACE and len(joined) > 0:
-        joined = joined[:len(joined)-2]
-                                  
+    global word,guess
+    
+    if mode == 4:
+        guess = key
+        print(guess)
+        if str(guess) in word:
+            print(word)
+            print("Character found")
+
+        else:
+            print("Character not found")
+        return
+    
+    word = word + key
+    if key == BACKSPACE and len(word) > 0 and mode == 1:
+        word = word[:len(word)-2]
+       
+            
+                      
 def keyPressed(): 
     global mode 
-    if key == ENTER:
+    if key == ENTER and mode == 1:
         mode = 3
+    
