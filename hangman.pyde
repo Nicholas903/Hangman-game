@@ -10,6 +10,7 @@ word_list = []
 display = ""
 counter = 0
 correct = ''
+selected_word = ''
 
 def setup():
     size(1000,1000)
@@ -32,17 +33,15 @@ def draw():
     
     elif mode == 3:
         background(255)
+    
         deign()
-        option = f.readlines()[random.randint(0, len(f.readlines()) - 1 )]
-
-        word_list = list(option)
-        for x in range(len(word_list)):
-            if word_list[x] == " ":
+        for x in range(len(selected_word)):
+            if selected_word[x] == " ":
                 result = result + "  "
             else:
                 result = result + "_ "
                 
-        for y in range(len(word_list)):
+        for y in range(len(selected_word)):
             word_guess.append(" ")
  
         fill(0)
@@ -56,9 +55,7 @@ def draw():
     elif mode == 6:
         delay(3000)
         background(0)
-        file = open("Words.txt", "w")
-        file.write()
-        file.close()
+        
     
     
     
@@ -68,31 +65,32 @@ def keyTyped():
     if mode == 4:
         guess = str(key)
         print(guess)
-        if guess in word_list:
-            print(space)
+        if guess in selected_word:
             print("Character found")
-            for j in range(len(word_list)):
-                if guess == word_list[j]:
+            for j in range(len(selected_word)):
+                if guess == selected_word[j]:
                     word_guess[j] = guess
             background(255)
-            correct = " ".join((word_list) for word_list in word_guess)
-            print(correct)
+            correct = " ".join((selected_word) for selected_word in word_guess)
             textSize(55)
             text(str(correct), 250, 945)
             textSize(60)
             text(result,250,950)
             deign()
-            space= word.replace("", " ")[1: -1]
-            print(space)
-            if correct == space:
+            space = word.replace("", " ")[1: -1]
+            if not(' ' in word_guess):
+                open('Words.txt', 'w').close()
+                print(word_guess)
+                
                 mode = 5
-           
                         
         else:
+            return
             counter += 1
             print("Character not found")
             print(counter)
             incorrect_guess()
+            
             
         return
     
@@ -120,6 +118,8 @@ def incorrect_guess():
 
     if counter == 6:
         line(650,600,700,500) 
+        open('Words.txt', 'w').close()
+
         mode = 6
         
 
@@ -138,13 +138,24 @@ def keyPressed():
         file.write(word+"\n")
         file.close()
         word = ''
+        
+        
+
 
         
 
 def mousePressed():
     # checks clicks if it is in respective mode/menu
-    global mode
+    global mode, selected_word, word_list
+   
    
     # retuns to menu
     if mouseX < 950 and mouseX >800 and mouseY < 950 and mouseY > 850 and mode == 1:
-        mode = 3  
+        for word in map(lambda n:n.strip("\n"), open('Words.txt').readlines()):
+            if word not in word_list:
+                word_list.append(word) 
+                
+                
+        mode = 3 
+        selected_word = word_list[random.randint(0,len(word_list)-1)]
+        print(selected_word)
