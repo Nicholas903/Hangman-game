@@ -11,6 +11,7 @@ display = ""
 counter = 0
 correct = ''
 selected_word = ''
+word_selected = ''
 
 def setup():
     size(1000,1000)
@@ -60,39 +61,39 @@ def draw():
     
     
 def keyTyped():
-    global word,guess,result,space,word_guess,word_list, display,counter,space,mode
-    
+    global word,guess,result,space,word_guess,word_list, display,counter,space,mode,word_selected
+    print(word_selected)
     if mode == 4:
         guess = str(key)
-        print(guess)
         if guess in selected_word:
-            print("Character found")
             for j in range(len(selected_word)):
                 if guess == selected_word[j]:
                     word_guess[j] = guess
-            background(255)
             correct = " ".join((selected_word) for selected_word in word_guess)
             textSize(55)
+            fill(0)
             text(str(correct), 250, 945)
             textSize(60)
-            text(result,250,950)
             deign()
-            space = word.replace("", " ")[1: -1]
-            if not(' ' in word_guess):
+            text(result,250,950)
+
+            print(word_guess)
+            space = word_selected.replace("", " ")[1: -1]
+            if correct == space:
                 open('Words.txt', 'w').close()
-                print(word_guess)
-                
+                fill(0)
+                text(result,250,950)
+
                 mode = 5
                         
-        else:
-            return
+        elif guess not in selected_word:
             counter += 1
             print("Character not found")
             print(counter)
+
             incorrect_guess()
-            
-            
         return
+            
     
 
     
@@ -146,7 +147,7 @@ def keyPressed():
 
 def mousePressed():
     # checks clicks if it is in respective mode/menu
-    global mode, selected_word, word_list
+    global mode, selected_word, word_list,word_selected
    
    
     # retuns to menu
@@ -158,4 +159,5 @@ def mousePressed():
                 
         mode = 3 
         selected_word = word_list[random.randint(0,len(word_list)-1)]
-        print(selected_word)
+        word_selected = selected_word
+        print(word_selected)
