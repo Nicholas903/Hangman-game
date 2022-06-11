@@ -1,4 +1,5 @@
 import random
+import time
 
 word = ''
 guess = ''
@@ -12,13 +13,22 @@ counter = 0
 correct = ''
 selected_word = ''
 word_selected = ''
+rendered_frame = False
 
 def setup():
     size(1000,1000)
 
 def draw():
-    global mode, result,guess,space,word_guess,word_list, display
+    global mode, result,guess,space,word_guess,word_list, display,rendered_frame
+    background(255)
     
+    if mode == 1 or mode == 2 or mode == 3 or mode == 4:
+        deign()
+        incorrect_guess()
+        fill(0)
+        text(str(correct), 250, 945)
+        text(result,250,950)
+
     if mode == 1:
         background(0)
         
@@ -35,7 +45,6 @@ def draw():
     elif mode == 3:
         background(255)
     
-        deign()
         for x in range(len(selected_word)):
             if selected_word[x] == " ":
                 result = result + "  "
@@ -50,40 +59,51 @@ def draw():
         text(result,250,950)
         mode = 4
 
-    elif mode == 5:
-        delay(3000)
-        background(0)
-    elif mode == 6:
+    if mode == 4 or mode == 5 or mode == 6:
+
+        print(correct,time.time())
+        fill(0)
+        text(str(correct), 250, 945)
+        text(result,250,950)
+
+        deign()
+        incorrect_guess()
+
+    if mode == 5:
+        if rendered_frame == True:
+            
+            delay(3000)
+            background(0)
+        else:
+            rendered_frame = True
+        
+    if mode == 6:
         delay(3000)
         background(0)
         
-    
+   
+
     
     
 def keyTyped():
-    global word,guess,result,space,word_guess,word_list, display,counter,space,mode,word_selected
-    print(word_selected)
+    global word,guess,result,space,word_guess,word_list, display,counter,space,mode,word_selected,correct
     if mode == 4:
+        
         guess = str(key)
         if guess in selected_word:
             for j in range(len(selected_word)):
                 if guess == selected_word[j]:
                     word_guess[j] = guess
+
+
             correct = " ".join((selected_word) for selected_word in word_guess)
-            textSize(55)
-            fill(0)
-            text(str(correct), 250, 945)
             textSize(60)
             deign()
-            text(result,250,950)
-
             print(word_guess)
+
             space = word_selected.replace("", " ")[1: -1]
             if correct == space:
                 open('Words.txt', 'w').close()
-                fill(0)
-                text(result,250,950)
-
                 mode = 5
                         
         elif guess not in selected_word:
@@ -104,20 +124,20 @@ def keyTyped():
        
 def incorrect_guess():
     global mode
-    if counter == 1:
+    if counter >= 1:
         fill(255)
         ellipse(700,250,100,100)
-    if counter == 2:
+    if counter >= 2:
         line(700,300,700,500) 
-    if counter == 3:
+    if counter >= 3:
         line(700,400,800,350) 
-    if counter == 4:
+    if counter >= 4:
         line(600,350,700,400) 
 
-    if counter == 5:
+    if counter >= 5:
         line(700,500,750,600) 
 
-    if counter == 6:
+    if counter >= 6:
         line(650,600,700,500) 
         open('Words.txt', 'w').close()
 
