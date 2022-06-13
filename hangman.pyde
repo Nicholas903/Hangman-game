@@ -13,7 +13,9 @@ counter = 0
 correct = ''
 selected_word = ''
 word_selected = ''
+incorrect_guessed_letter = None
 rendered_frame = False
+
 
 def setup():
     size(1000,1000)
@@ -25,6 +27,9 @@ def draw():
     if mode == 1 or mode == 2 or mode == 3 or mode == 4:
         deign()
         incorrect_guess()
+        correct_guessed_letter()
+        textSize(60)
+
         fill(0)
         text(str(correct), 250, 945)
         text(result,250,950)
@@ -60,14 +65,15 @@ def draw():
         mode = 4
 
     if mode == 4 or mode == 5 or mode == 6:
-
-        print(correct,time.time())
+        textSize(60)
         fill(0)
         text(str(correct), 250, 945)
         text(result,250,950)
 
         deign()
         incorrect_guess()
+        correct_guessed_letter()
+
 
     if mode == 5:
         if rendered_frame == True:
@@ -86,7 +92,7 @@ def draw():
     
     
 def keyTyped():
-    global word,guess,result,space,word_guess,word_list, display,counter,space,mode,word_selected,correct
+    global word,guess,result,space,word_guess,word_list, display,counter,space,mode,word_selected,correct,incorrect_guessed_letter
     if mode == 4:
         
         guess = str(key)
@@ -94,6 +100,7 @@ def keyTyped():
             for j in range(len(selected_word)):
                 if guess == selected_word[j]:
                     word_guess[j] = guess
+                    incorrect_guessed_letter = False
 
 
             correct = " ".join((selected_word) for selected_word in word_guess)
@@ -108,38 +115,83 @@ def keyTyped():
                         
         elif guess not in selected_word:
             counter += 1
-            print("Character not found")
+            print(guess)
             print(counter)
-
+            incorrect_guessed_letter = True
             incorrect_guess()
         return
             
-    
 
-    
     word = word + key
     word = word.strip("\n")
     if key == BACKSPACE and len(word) > 0 and mode == 1:
         word = word[:len(word)-2]
-       
+
+def correct_guessed_letter():
+    if incorrect_guessed_letter == False:
+        textSize(26)
+        fill(0)
+        text("The letter",150,870)
+        text(guess,280,870)
+        text("is in the word",310,870)
+        
 def incorrect_guess():
-    global mode
+    global mode,guess
     if counter >= 1:
+        textSize(26)
         fill(255)
         ellipse(700,250,100,100)
+        fill(0)
+        text("The letter",150,870)
+        text(guess,280,870)
+        text("is not in the word",310,870)
+        incorrect_guessed_letter == True
     if counter >= 2:
+        textSize(26)
         line(700,300,700,500) 
+        fill(0)
+        text("The letter",150,870)
+        text(guess,280,870)
+        text("is not in the word",310,870)
+        incorrect_guessed_letter == True
     if counter >= 3:
-        line(700,400,800,350) 
+        textSize(26)
+        line(700,400,800,350)
+        fill(0)
+        text("The letter",150,870)
+        text(guess,280,870)
+        text("is not in the word",310,870)
+        incorrect_guessed_letter == True
     if counter >= 4:
+        textSize(26)
+
         line(600,350,700,400) 
+        fill(0)
+        text("The letter",150,870)
+        text(guess,280,870)
+        text("is not in the word",310,870)
+        incorrect_guessed_letter == True
 
     if counter >= 5:
+        textSize(26)
+
         line(700,500,750,600) 
+        fill(0)
+        text("The letter",150,870)
+        text(guess,280,870)
+        text("is not in the word",310,870)
+        incorrect_guessed_letter == True
 
     if counter >= 6:
+        textSize(26)
+
         line(650,600,700,500) 
         open('Words.txt', 'w').close()
+        fill(0)
+        text("The letter",150,870)
+        text(guess,280,870)
+        text("is not in the word",310,870)
+        incorrect_guessed_letter == True
 
         mode = 6
         
@@ -180,4 +232,3 @@ def mousePressed():
         mode = 3 
         selected_word = word_list[random.randint(0,len(word_list)-1)]
         word_selected = selected_word
-        print(word_selected)
