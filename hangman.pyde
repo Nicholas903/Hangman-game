@@ -19,6 +19,8 @@ rendered_frame = False
 
 def setup():
     size(1000,1000)
+    
+        
 
 def draw():
     global mode, result,guess,space,word_guess,word_list, display,rendered_frame
@@ -26,6 +28,7 @@ def draw():
     
     if mode == 1 or mode == 2 or mode == 3 or mode == 4:
         deign()
+
         incorrect_guess()
         correct_guessed_letter()
         textSize(60)
@@ -71,8 +74,8 @@ def draw():
         text(result,250,950)
 
         deign()
-        incorrect_guess()
         correct_guessed_letter()
+        incorrect_guess()
 
 
     if mode == 5:
@@ -118,7 +121,7 @@ def keyTyped():
             print(guess)
             print(counter)
             incorrect_guessed_letter = True
-            incorrect_guess()
+
         return
             
 
@@ -137,61 +140,42 @@ def correct_guessed_letter():
         
 def incorrect_guess():
     global mode,guess
+    if incorrect_guessed_letter == True:
+        textSize(26)
+        fill(0)
+        text("The letter",150,870)
+        text(guess,280,870)
+        text("is not in the word",310,870)
     if counter >= 1:
         textSize(26)
         fill(255)
         ellipse(700,250,100,100)
-        fill(0)
-        text("The letter",150,870)
-        text(guess,280,870)
-        text("is not in the word",310,870)
-        incorrect_guessed_letter == True
+        
     if counter >= 2:
         textSize(26)
         line(700,300,700,500) 
-        fill(0)
-        text("The letter",150,870)
-        text(guess,280,870)
-        text("is not in the word",310,870)
-        incorrect_guessed_letter == True
+        
     if counter >= 3:
         textSize(26)
         line(700,400,800,350)
-        fill(0)
-        text("The letter",150,870)
-        text(guess,280,870)
-        text("is not in the word",310,870)
-        incorrect_guessed_letter == True
+        
     if counter >= 4:
         textSize(26)
 
-        line(600,350,700,400) 
-        fill(0)
-        text("The letter",150,870)
-        text(guess,280,870)
-        text("is not in the word",310,870)
-        incorrect_guessed_letter == True
+        line(600,350,700,400)        
 
     if counter >= 5:
         textSize(26)
 
         line(700,500,750,600) 
-        fill(0)
-        text("The letter",150,870)
-        text(guess,280,870)
-        text("is not in the word",310,870)
-        incorrect_guessed_letter == True
+       
 
     if counter >= 6:
         textSize(26)
 
         line(650,600,700,500) 
         open('Words.txt', 'w').close()
-        fill(0)
-        text("The letter",150,870)
-        text(guess,280,870)
-        text("is not in the word",310,870)
-        incorrect_guessed_letter == True
+        
 
         mode = 6
         
@@ -207,6 +191,10 @@ def deign():
 def keyPressed(): 
     global mode ,word
     if key == ENTER and mode == 1:
+        if word in word_list:
+            word = ''
+            return
+        word_list.append(word)
         file = open('Words.txt',"a")
         file.write(word+"\n")
         file.close()
@@ -222,11 +210,8 @@ def mousePressed():
     global mode, selected_word, word_list,word_selected
    
    
-    # retuns to menu
     if mouseX < 950 and mouseX >800 and mouseY < 950 and mouseY > 850 and mode == 1:
-        for word in map(lambda n:n.strip("\n"), open('Words.txt').readlines()):
-            if word not in word_list:
-                word_list.append(word) 
+         
                 
                 
         mode = 3 
