@@ -1,5 +1,4 @@
 import random
-import time
 
 word = ''
 guess = ''
@@ -19,18 +18,20 @@ rendered_frame = False
 
 def setup():
     size(1000,1000)
-    
+    background(255)
+
         
 
 def draw():
-    global mode, result,guess,space,word_guess,word_list, display,rendered_frame
+    global mode, result,guess,space,word_guess,word_list, display,rendered_frame,number,word
     background(255)
     
-    if mode == 1 or mode == 2 or mode == 3 or mode == 4:
+    if mode == 1 or mode == 3 or mode == 4:
         deign()
 
-        incorrect_guess()
         correct_guessed_letter()
+        incorrect_guess()
+
         textSize(60)
 
         fill(0)
@@ -48,6 +49,8 @@ def draw():
         fill(255)
         text("Please enter a word",625,430)
         rect(800,850,150,100)
+        text("Press to continue",775,830)
+
         
     
     elif mode == 3:
@@ -81,21 +84,49 @@ def draw():
     if mode == 5:
         if rendered_frame == True:
             
-            delay(3000)
             background(0)
+            fill(255)
+            rect(800,850,150,100)
+            word_list = []
+            word = ''
+            guess = ''
+            result = ''
+            word_guess = []
+            word_selected = ''
+            space = ''
+
+            incorrect_guessed_letter = None
+            
+
+            print(word_guess)
+
+            
         else:
             rendered_frame = True
+
         
     if mode == 6:
-        delay(3000)
-        background(0)
-        
+        if rendered_frame == True:
+            
+            background(0)
+            fill(255)
+            rect(800,850,150,100)
+            word_list = []
+            word_guess = []
+            word = ''
+            incorrect_guessed_letter = None
+
+
+
+        else:
+            rendered_frame = True
+
    
 
     
     
 def keyTyped():
-    global word,guess,result,space,word_guess,word_list, display,counter,space,mode,word_selected,correct,incorrect_guessed_letter
+    global word,guess,result,space,word_guess,word_list, display,counter,space,mode,word_selected,correct,incorrect_guessed_letter,number
     if mode == 4:
         
         guess = str(key)
@@ -129,6 +160,7 @@ def keyTyped():
     word = word.strip("\n")
     if key == BACKSPACE and len(word) > 0 and mode == 1:
         word = word[:len(word)-2]
+
 
 def correct_guessed_letter():
     if incorrect_guessed_letter == False:
@@ -172,11 +204,9 @@ def incorrect_guess():
 
     if counter >= 6:
         textSize(26)
-
         line(650,600,700,500) 
         open('Words.txt', 'w').close()
         
-
         mode = 6
         
 
@@ -207,13 +237,25 @@ def keyPressed():
 
 def mousePressed():
     # checks clicks if it is in respective mode/menu
-    global mode, selected_word, word_list,word_selected
+    global mode, selected_word, word_list,word_selected,word,guess,result,word_guess,counter
    
    
     if mouseX < 950 and mouseX >800 and mouseY < 950 and mouseY > 850 and mode == 1:
          
-                
-                
         mode = 3 
         selected_word = word_list[random.randint(0,len(word_list)-1)]
         word_selected = selected_word
+        
+     # retuns to menu
+    if mouseX < 950 and mouseX >800 and mouseY < 950 and mouseY > 850 and (mode == 5 or mode == 6) :
+        mode = 1
+        word_list = []
+        word = ''
+        guess = ''
+        result = ''
+        word_guess = []
+        word_selected = ''
+        space = ''
+        counter = 0
+        incorrect_guessed_letter = None
+    
