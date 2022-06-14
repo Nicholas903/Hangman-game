@@ -2,7 +2,7 @@ import random
 
 word = ''
 guess = ''
-mode = 1
+mode = 0
 space = ''
 result = ''
 word_guess = []
@@ -18,16 +18,30 @@ rendered_frame = False
 
 def setup():
     size(1000,1000)
-    background(255)
-
+    font = createFont("Bubblegum.ttf", 150)
+    textFont(font)
         
 
 def draw():
     global mode, result,guess,space,word_guess,word_list, display,rendered_frame,number,word
     background(255)
-    
+    if mode == 0:
+        new_game = True
+        menu()
+        Image = loadImage("43980.png")
+        image(Image,600,20)
+        
+   
+
+    elif mode == 2:
+        rules()
+        Image2 = loadImage("png.png")
+        image(Image2, 200,350)
+        
+        
+
     if mode == 1 or mode == 3 or mode == 4:
-        deign()
+        design()
 
         correct_guessed_letter()
         incorrect_guess()
@@ -50,6 +64,11 @@ def draw():
         text("Please enter a word",625,430)
         rect(800,850,150,100)
         text("Press to continue",775,830)
+        rect(150,850,150,100)
+        fill(0)
+        text("Back",190,915)
+
+
 
         
     
@@ -76,7 +95,7 @@ def draw():
         text(str(correct), 250, 945)
         text(result,250,950)
 
-        deign()
+        design()
         correct_guessed_letter()
         incorrect_guess()
 
@@ -139,7 +158,7 @@ def keyTyped():
 
             correct = " ".join((selected_word) for selected_word in word_guess)
             textSize(60)
-            deign()
+            design()
             print(word_guess)
 
             space = word_selected.replace("", " ")[1: -1]
@@ -155,11 +174,11 @@ def keyTyped():
 
         return
             
-
-    word = word + key
-    word = word.strip("\n")
-    if key == BACKSPACE and len(word) > 0 and mode == 1:
-        word = word[:len(word)-2]
+    if mode == 1:
+        word = word + key
+        word = word.strip("\n")
+        if key == BACKSPACE and len(word) > 0 and mode == 1:
+            word = word[:len(word)-2]
 
 
 def correct_guessed_letter():
@@ -209,8 +228,39 @@ def incorrect_guess():
         
         mode = 6
         
+def menu():
+    strokeWeight(10)
 
-def deign():
+    background(255)
+    textSize(120)
+    fill(0)
+    text("HANGMAN",50,250)
+    fill(255)
+    rect(250,500,200,100)
+    rect(570,500,200,100)
+    textSize(60)
+    fill(0)
+    text("PLAY", 280,570)
+    textSize(60)
+    fill(0)
+    text("RULES", 590,570)
+
+def rules():
+    background(0)
+    fill(0)
+    textSize(120)
+    fill(255)
+    text("RULES", 350, 150)
+    textSize(20)
+    text("1. The host is randomly chosen among the 2 players. If you are the host, create a list of words.", 20,200)
+    text("2. The other player will attempt to guess the randomly chosen word.", 20, 250)
+    text("3. If the other player incorrectly guesses the word more than 6 times, game over.",20, 300)
+    rect(750,700,200,100)
+    textSize(60)
+    fill(0)
+    text("BACK", 770,780)        
+
+def design():
     strokeWeight(10)
     line(300,100,700,100)
     line(300,800,300,100)
@@ -258,4 +308,13 @@ def mousePressed():
         space = ''
         counter = 0
         incorrect_guessed_letter = None
+        
+    if mouseX < 450 and mouseX > 250 and mouseY < 600 and mouseY > 500 and mode == 0:
+        mode = 1 
+    if mouseX < 770 and mouseX > 570 and mouseY < 600 and mouseY > 500 and mode == 0:
+        mode = 2
+    if mouseX < 950 and mouseX > 750 and mouseY < 800 and mouseY > 700 and mode == 2:
+        mode = 0
+    if mouseX < 295 and mouseX > 155 and mouseY < 950 and mouseY > 850 and mode == 1:
+        mode = 0
     
