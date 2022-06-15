@@ -17,9 +17,11 @@ rendered_frame = False
 
 
 def setup():
+    global frame
     size(1000,1000)
     font = createFont("Bubblegum.ttf", 150)
     textFont(font)
+frame, max_frame = 0.52
         
 
 def draw():
@@ -101,6 +103,7 @@ def draw():
 
 
     if mode == 5:
+        win()
         if rendered_frame == True:
             
             background(0)
@@ -125,6 +128,7 @@ def draw():
 
         
     if mode == 6:
+        lose()
         if rendered_frame == True:
             
             background(0)
@@ -227,6 +231,21 @@ def incorrect_guess():
         open('Words.txt', 'w').close()
         
         mode = 6
+
+def win():
+    global frame
+    frame += 1
+    if frame >= max_frame:
+        frame = 0
+    print("(" + str(frame) + ")")
+    image(loadImage("(" + str (frame) + ").gif"), 245,0,500,281)
+    
+    
+        
+        
+def lose():
+    background(255)
+        
         
 def menu():
     strokeWeight(10)
