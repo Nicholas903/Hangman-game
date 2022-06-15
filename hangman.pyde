@@ -1,4 +1,5 @@
 import random
+import time
 
 word = ''
 guess = ''
@@ -14,6 +15,7 @@ selected_word = ''
 word_selected = ''
 incorrect_guessed_letter = None
 rendered_frame = False
+time_reset = -1
 
 
 def setup():
@@ -23,8 +25,32 @@ def setup():
         
 
 def draw():
-    global mode, result,guess,space,word_guess,word_list, display,rendered_frame,number,word
+    global mode, result,guess,space,word_guess,word_list, display,rendered_frame,number,word,incorrect_guessed_letter,correct,time_reset
     background(255)
+    
+    if mode == 5:
+        if time_reset == -1:
+            time_reset = time.time()
+            
+        reset_game()   
+
+    
+
+
+            
+        
+
+        
+    if mode == 6:
+        if time_reset == -1:
+            time_reset = time.time()
+            
+        reset_game() 
+    
+    
+    
+    
+    
     if mode == 0:
         new_game = True
         menu()
@@ -100,44 +126,8 @@ def draw():
         incorrect_guess()
 
 
-    if mode == 5:
-        if rendered_frame == True:
-            
-            background(0)
-            fill(255)
-            rect(800,850,150,100)
-            word_list = []
-            word = ''
-            guess = ''
-            result = ''
-            word_guess = []
-            word_selected = ''
-            space = ''
-
-            incorrect_guessed_letter = None
-            
-
-
-            
-        else:
-            rendered_frame = True
-
+    
         
-    if mode == 6:
-        if rendered_frame == True:
-            
-            background(0)
-            fill(255)
-            rect(800,850,150,100)
-            word_list = []
-            word_guess = []
-            word = ''
-            incorrect_guessed_letter = None
-
-
-
-        else:
-            rendered_frame = True
 
    
 
@@ -186,6 +176,7 @@ def correct_guessed_letter():
         text("The letter",150,870)
         text(guess,290,870)
         text("is in the word",310,870)
+        print("you won", time.time())
         
 def incorrect_guess():
     global mode,guess
@@ -197,7 +188,7 @@ def incorrect_guess():
         text("is not in the word",315,870)
     if counter >= 1:
         textSize(26)
-        fill(255)
+        fill(0)
         ellipse(700,250,100,100)
         
     if counter >= 2:
@@ -265,6 +256,33 @@ def design():
     line(200,800,400,800)
     line(700,200,700,100) 
     
+    
+def reset_game():
+    global time_reset
+
+    cooldown = 2
+    
+    if time.time() < time_reset + cooldown:
+        return
+    
+    
+    global mode, result,guess,space,word_guess,word_list, display,rendered_frame,number,word,incorrect_guessed_letter,correct,time_reset
+    background(0)
+    fill(255)
+    rect(800,850,150,100)
+    word_list = []
+    word = ''
+    guess = ''
+    result = ''
+    word_guess = []
+    word_selected = ''
+    space = ''
+    correct = ''
+    incorrect_guessed_letter = None
+    
+    
+    
+    
                                     
 def keyPressed(): 
     global mode ,word
@@ -298,7 +316,7 @@ def mousePressed():
         
      # retuns to menu
     if mouseX < 950 and mouseX >800 and mouseY < 950 and mouseY > 850 and (mode == 5 or mode == 6) :
-        mode = 1
+        mode = 0
         word_list = []
         word = ''
         guess = ''
@@ -308,6 +326,7 @@ def mousePressed():
         space = ''
         counter = 0
         incorrect_guessed_letter = None
+        time_reset = -1
         
     if mouseX < 450 and mouseX > 250 and mouseY < 600 and mouseY > 500 and mode == 0:
         mode = 1 
