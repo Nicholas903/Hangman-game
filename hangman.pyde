@@ -117,7 +117,6 @@ def draw():
             incorrect_guessed_letter = None
             
 
-            print(word_guess)
 
             
         else:
@@ -149,27 +148,26 @@ def keyTyped():
     if mode == 4:
         
         guess = str(key)
+        guess = guess.lower()
         if guess in selected_word:
             for j in range(len(selected_word)):
                 if guess == selected_word[j]:
                     word_guess[j] = guess
                     incorrect_guessed_letter = False
 
-
             correct = " ".join((selected_word) for selected_word in word_guess)
+            print(correct)
             textSize(60)
             design()
-            print(word_guess)
-
+            word_selected = word_selected.lower()
             space = word_selected.replace("", " ")[1: -1]
+            print(space)
             if correct == space:
                 open('Words.txt', 'w').close()
                 mode = 5
                         
         elif guess not in selected_word:
             counter += 1
-            print(guess)
-            print(counter)
             incorrect_guessed_letter = True
 
         return
@@ -186,7 +184,7 @@ def correct_guessed_letter():
         textSize(26)
         fill(0)
         text("The letter",150,870)
-        text(guess,280,870)
+        text(guess,290,870)
         text("is in the word",310,870)
         
 def incorrect_guess():
@@ -195,8 +193,8 @@ def incorrect_guess():
         textSize(26)
         fill(0)
         text("The letter",150,870)
-        text(guess,280,870)
-        text("is not in the word",310,870)
+        text(guess,290,870)
+        text("is not in the word",315,870)
     if counter >= 1:
         textSize(26)
         fill(255)
@@ -295,6 +293,8 @@ def mousePressed():
         mode = 3 
         selected_word = word_list[random.randint(0,len(word_list)-1)]
         word_selected = selected_word
+        selected_word = selected_word.lower()
+        print(selected_word)
         
      # retuns to menu
     if mouseX < 950 and mouseX >800 and mouseY < 950 and mouseY > 850 and (mode == 5 or mode == 6) :
