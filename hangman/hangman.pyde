@@ -21,11 +21,13 @@ def setup():
     size(1000,1000)
     font = createFont("Bubblegum.ttf", 150)
     textFont(font)
-frame, max_frame = 0.52
+    frameRate(30)
+frame, max_frame = 1, 77
         
+frame2, max_frame = 1, 14
 
 def draw():
-    global mode, result,guess,space,word_guess,word_list, display,rendered_frame,number,word
+    global mode, result,guess,space,word_guess,word_list, display,rendered_frame,number,word, frame, frame2
     background(255)
     if mode == 0:
         new_game = True
@@ -103,10 +105,10 @@ def draw():
 
 
     if mode == 5:
-        win()
+        global frame
         if rendered_frame == True:
             
-            background(0)
+            background(255)
             fill(255)
             rect(800,850,150,100)
             word_list = []
@@ -122,13 +124,21 @@ def draw():
 
             print(word_guess)
 
+            frame += 1
+            if frame >= max_frame:
+                frame = 1
+            print("(" + str(frame) + ")")
+            image(loadImage("winning/(" + str (frame) + ").gif"), 245,200,500,281)
+            textSize(50)
+            fill(0)
+            text("YOU WON!", 400, 500)
             
         else:
             rendered_frame = True
 
         
     if mode == 6:
-        lose()
+        global frame2
         if rendered_frame == True:
             
             background(0)
@@ -139,8 +149,14 @@ def draw():
             word = ''
             incorrect_guessed_letter = None
 
-
-
+            frame2 += 1
+            if frame2 >= max_frame:
+                frame2 = 1
+            print("(" + str(frame2) + ")")
+            image(loadImage("losing/(" + str (frame2) + ").gif"), 245,0,500,281)
+            textSize(50)
+            fill(0)
+            text("YOU LOST!", 400, 500)
         else:
             rendered_frame = True
 
@@ -232,17 +248,7 @@ def incorrect_guess():
         
         mode = 6
 
-def win():
-    global frame
-    frame += 1
-    if frame >= max_frame:
-        frame = 0
-    print("(" + str(frame) + ")")
-    image(loadImage("(" + str (frame) + ").gif"), 245,0,500,281)
-    
-    
-        
-        
+
 def lose():
     background(255)
         
