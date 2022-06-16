@@ -16,33 +16,26 @@ word_selected = ''
 incorrect_guessed_letter = None
 rendered_frame = False
 time_reset = -1
+select = False
+colour = 0
 
 # ################################################
 
 def setup():
+    global frame
     size(1000,1000)
     # changes font 
     font = createFont("Bubblegum.ttf", 150)
     textFont(font)
+    frameRate(20)
+frame, max_frame = 1, 77
         
+frame2, max_frame2 = 1, 14    
 
 def draw():
-    global mode, result,guess,space,word_guess,word_list, display,rendered_frame,number,word,incorrect_guessed_letter,correct,time_reset
+    global mode, result,guess,space,word_guess,word_list, display,rendered_frame,number,word,incorrect_guessed_letter,correct,time_reset,select,colour,frame, frame2
     background(255)
     
-    if mode == 5:
-        if time_reset == -1:
-            time_reset = time.time()
-            
-        reset_game()   
-
-        
-        
-    if mode == 6:
-        if time_reset == -1:
-            time_reset = time.time()
-            
-        reset_game() 
     
     
     # when mode is 0 generate the menu screen
@@ -51,7 +44,14 @@ def draw():
         menu()
         Image = loadImage("43980.png")
         image(Image,600,20)
+    if mouseX < 770 and mouseX > 570 and mouseY < 600 and mouseY > 500 and mode == 0:
+        fill(255,200)
+        rect(570,500,200,100,10)
         
+    if mouseX < 450 and mouseX > 250 and mouseY < 600 and mouseY > 500 and mode == 0:
+        fill(255,200)
+        rect(250,500,200,100,10)
+
    
    
     # if mode is 2 generate game rules        
@@ -59,20 +59,13 @@ def draw():
         rules()
         Image2 = loadImage("png.png")
         image(Image2, 200,350)
+        if mouseX < 950 and mouseX > 750 and mouseY < 800 and mouseY > 700 and mode == 2:
+            fill(255,200)
+            rect(750,700,200,100,10)
+
         
-        
 
-    if mode == 1 or mode == 3 or mode == 4:
-        design()
-
-        correct_guessed_letter()
-        incorrect_guess()
-
-        textSize(60)
-
-        fill(0)
-        text(str(correct), 250, 945)
-        text(result,250,950)
+    
     
     
     
@@ -81,18 +74,27 @@ def draw():
         background(0)
         
         fill(255)
-        rect(600,450,300,100)    
+        stroke(0,0,colour)
+        rect(350,450,300,100,10)    
         fill(0)
         textSize(26)
-        text(word,650,510)
+        text(word,400,510)
         fill(255)
-        text("Please enter a word",625,430)
-        rect(800,850,150,100)
-        text("Press to continue",775,830)
-        rect(150,850,150,100)
+        text("Please enter a word",370,430)
+        stroke(0)
+        rect(700,850,150,100,10)
+        text("Press to continue",660,830)
+        stroke(0)
+        rect(150,850,150,100,10)
         fill(0)
         text("Back",190,915)
-
+        text("Enter",735,915)
+        if mouseX < 295 and mouseX > 155 and mouseY < 950 and mouseY > 850 and mode == 1:
+            fill(255,200)
+            rect(150,850,150,100,10)
+        if mouseX < 845 and mouseX > 705 and mouseY < 950 and mouseY > 850 and mode == 1:
+            fill(255,200)
+            rect(700,850,150,100,10)
 
 
     # if mode is 3 count the number of letters are in the word ad converts them into blank spaces
@@ -113,6 +115,8 @@ def draw():
         text(result,250,950)
         mode = 4
 
+
+    # draws game
     if mode == 4 or mode == 5 or mode == 6:
         textSize(60)
         fill(0)
@@ -123,11 +127,11 @@ def draw():
         correct_guessed_letter()
         incorrect_guess()
 
-
-    
-        
-
-   
+    if (mode == 5 or mode == 6):
+        if time_reset == -1:
+            time_reset = time.time()
+            
+        reset_game() 
 
     
 # this function is all of the player typing 
@@ -160,7 +164,7 @@ def keyTyped():
 
         return
             
-    if mode == 1:
+    if mode == 1 and select == True:
         word = word + key
         word = word.strip("\n")
         if key == BACKSPACE and len(word) > 0 and mode == 1:
@@ -174,7 +178,6 @@ def correct_guessed_letter():
         text("The letter",150,870)
         text(guess,290,870)
         text("is in the word",310,870)
-        print("you won", time.time())
   
 # message for when player 2 gesses an incorrect letter and checks # of incorrect guesses and draws a part of the hanging man for each incorrect letter             
 def incorrect_guess():
@@ -225,8 +228,8 @@ def menu():
     fill(0)
     text("HANGMAN",50,250)
     fill(255)
-    rect(250,500,200,100)
-    rect(570,500,200,100)
+    rect(250,500,200,100,10)
+    rect(570,500,200,100,10)
     textSize(60)
     fill(0)
     text("PLAY", 280,570)
@@ -245,10 +248,10 @@ def rules():
     text("1. The host is randomly chosen among the 2 players. If you are the host, create a list of words.", 20,200)
     text("2. The other player will attempt to guess the randomly chosen word.", 20, 250)
     text("3. If the other player incorrectly guesses the word more than 6 times, game over.",20, 300)
-    rect(750,700,200,100)
+    rect(750,700,200,100,10)
     textSize(60)
     fill(0)
-    text("BACK", 770,780)        
+    text("BACK", 775,780)        
 
 
 # game menu design                  
@@ -266,14 +269,18 @@ def reset_game():
 
     cooldown = 2
     
+    print(time.time(),time_reset+cooldown)
     if time.time() < time_reset + cooldown:
+
         return
     
-    
-    global mode, result,guess,space,word_guess,word_list, display,rendered_frame,number,word,incorrect_guessed_letter,correct,time_reset
+    global mode, result,guess,space,word_guess,word_list, display,rendered_frame,number,word,incorrect_guessed_letter,correct,time_reset,frame, frame2
     background(0)
     fill(255)
-    rect(800,850,150,100)
+    rect(800,850,150,100,10)
+    fill(0)
+    textSize(26)
+    text("Back",840,915)
     word_list = []
     word = ''
     guess = ''
@@ -284,13 +291,36 @@ def reset_game():
     correct = ''
     incorrect_guessed_letter = None
     
-    
+    if mode == 6:
+        frame2 += 1
+        if frame2 >= max_frame2:
+            frame2 = 1
+        print("(" + str(frame2) + ")")
+        image(loadImage("losing/(" + str (frame2) + ").gif"), 245,0,500,281)
+        textSize(50)
+        fill(0)
+        text("YOU LOST!", 400, 500)
+        if mouseX < 950 and mouseX > 800 and mouseY < 950 and mouseY > 850 and (mode == 5 or mode == 6):
+            fill(255,200)
+            rect(800,850,150,100,10)
+    else:
+        frame += 1
+        if frame >= max_frame:
+            frame = 1
+        print("(" + str(frame) + ")")
+        image(loadImage("winning/(" + str (frame) + ").gif"), 245,0,500,281)
+        textSize(50)
+        fill(0)
+        text("YOU WON!", 400, 500)  
+        if mouseX < 950 and mouseX > 800 and mouseY < 950 and mouseY > 850 and (mode == 5 or mode == 6):
+            fill(255,200)
+            rect(800,850,150,100,10)
     
     
 # when a key is pressed                                
 def keyPressed(): 
     global mode ,word
-    if key == ENTER and mode == 1:
+    if key == ENTER and mode == 1 and select == True:
         if word in word_list:
             word = ''
             return
@@ -308,10 +338,10 @@ def keyPressed():
 # if someone clicks mouse            
 def mousePressed():
     # checks clicks if it is in respective mode/menu
-    global mode, selected_word, word_list,word_selected,word,guess,result,word_guess,counter
+    global mode, selected_word, word_list,word_selected,word,guess,result,word_guess,counter, time_reset,select,colour
    
-   
-    if mouseX < 950 and mouseX >800 and mouseY < 950 and mouseY > 850 and mode == 1:
+    println(mouseX)
+    if mouseX < 845 and mouseX > 705 and mouseY < 950 and mouseY > 850 and mode == 1:
          
         mode = 3 
         selected_word = word_list[random.randint(0,len(word_list)-1)]
@@ -320,7 +350,7 @@ def mousePressed():
         print(selected_word)
         
     # when game is over and player two has won or lost return to menu button  
-    if mouseX < 950 and mouseX >800 and mouseY < 950 and mouseY > 850 and (mode == 5 or mode == 6) :
+    if mouseX < 950 and mouseX > 800 and mouseY < 950 and mouseY > 850 and (mode == 5 or mode == 6) :
         mode = 0
         word_list = []
         word = ''
@@ -333,19 +363,33 @@ def mousePressed():
         incorrect_guessed_letter = None
         time_reset = -1
    
-    # when pressed the first part of the game will begin     
+    # when pressed the first part of the game will begin 
     if mouseX < 450 and mouseX > 250 and mouseY < 600 and mouseY > 500 and mode == 0:
         mode = 1 
+        return
      
     # when pressed will bring player to the rules page
     if mouseX < 770 and mouseX > 570 and mouseY < 600 and mouseY > 500 and mode == 0:
         mode = 2
-        
+        return
+
     # retuns to menu
     if mouseX < 950 and mouseX > 750 and mouseY < 800 and mouseY > 700 and mode == 2:
         mode = 0
-        
+        return
+
     # retuns to menu
     if mouseX < 295 and mouseX > 155 and mouseY < 950 and mouseY > 850 and mode == 1:
         mode = 0
+        return
+
+    # when clicked allows the player to enter in words
+    if mouseX < 645 and mouseX > 345 and mouseY < 545 and mouseY > 455 and mode == 1:
+        select = True
+        colour = 255
+
+    else:
+        select = False
+        colour = 0
+        
     
