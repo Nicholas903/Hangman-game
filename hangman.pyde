@@ -1,7 +1,9 @@
+# global variables
+
 add_library('minim')    # add minim audio library
 
-import random
-import time
+import random # adds random number
+import time # returns the elapsed time 
 
 word = ''
 guess = ''
@@ -60,11 +62,12 @@ def draw():
         win_sound.rewind()
         lose_sound.rewind()
 
-
+    # if the mouse curser goes over this box add a transparent square over box to show that the user can select it 
     if mouseX < 770 and mouseX > 570 and mouseY < 600 and mouseY > 500 and mode == 0:
         fill(255,200)
         rect(570,500,200,100,10)
         
+    # if the mouse curser goes over this box add a transparent square over box to show that the user can select it 
     if mouseX < 450 and mouseX > 250 and mouseY < 600 and mouseY > 500 and mode == 0:
         fill(255,200)
         rect(250,500,200,100,10)
@@ -76,6 +79,8 @@ def draw():
         rules()
         Image2 = loadImage("png.png")
         image(Image2, 200,350)
+        
+        # if the mouse curser goes over this box add a transparent square over box to show that the user can select it 
         if mouseX < 950 and mouseX > 750 and mouseY < 800 and mouseY > 700 and mode == 2:
             fill(255,200)
             rect(750,700,200,100,10)
@@ -109,9 +114,12 @@ def draw():
         text("start",735,895)
         text("game",735,925)
 
+        # if the mouse curser goes over this box add a transparent square over box to show that the user can select it 
         if mouseX < 295 and mouseX > 155 and mouseY < 950 and mouseY > 850 and mode == 1:
             fill(255,200)
             rect(150,850,150,100,10)
+            
+        # if the mouse curser goes over this box add a transparent square over box to show that the user can select it 
         if mouseX < 845 and mouseX > 705 and mouseY < 950 and mouseY > 850 and mode == 1:
             fill(255,200)
             rect(700,850,150,100,10)
@@ -146,7 +154,8 @@ def draw():
         design()
         correct_guessed_letter()
         incorrect_guess()
-
+        
+    # when mode is 5 print player congradulations when mode is 6 print sympathetic message
     if (mode == 5 or mode == 6):
         if time_reset == -1:
             time_reset = time.time()
@@ -161,6 +170,8 @@ def keyTyped():
         
         guess = str(key)
         guess = guess.lower()
+        
+        # this checks if the guess is in the word
         if guess in selected_word:
             for j in range(len(selected_word)):
                 if guess == selected_word[j]:
@@ -168,16 +179,20 @@ def keyTyped():
                     incorrect_guessed_letter = False
                     correct_sound.play()
                     correct_sound.rewind()
-
+                    
+            # if the user has guessed a correct letter add it to the list of correct guesses
             correct = " ".join((selected_word) for selected_word in word_guess)
             textSize(60)
             design()
             word_selected = word_selected.lower()
             space = word_selected.replace("", " ")[1: -1]
+            
+            # compares the list of words that the player has guessed to the selected word 
             if correct == space:
                 open('Words.txt', 'w').close()
                 mode = 5
-                        
+         
+        # if guess is not in the word add one to the counter and incorrect_guess becomes true and play sound                                
         elif guess not in selected_word:
             counter += 1
             incorrect_guessed_letter = True
@@ -185,10 +200,12 @@ def keyTyped():
             incorrect_sound.rewind()
 
         return
-            
+    
+    # if mode is 1 and user has clicked on the box allow user to type                                 
     if mode == 1 and select == True:
         word = word + key
         word = word.strip("\n")
+        # if user makes a mistake they can backspace and correct it. 
         if key == BACKSPACE and len(word) > 0 and mode == 1:
             word = word[:len(word)-2]
 
@@ -211,44 +228,34 @@ def incorrect_guess():
         text(guess,290,870)
         text("is not in the word",315,870)
 
-
+    # prints head 
     if counter >= 1:
-        
-
         textSize(26)
         fill(0)
         ellipse(700,250,100,100)
         
-        loop()
-
+    # prints body 
     if counter >= 2:
-        
-
-
-
         textSize(26)
-        line(700,300,700,500) 
-        
+        line(700,300,700,500)
+         
+    # prints right arm
     if counter >= 3:
-
         textSize(26)
         line(700,400,800,350)
         
+    # prints left arm
     if counter >= 4:
-
         textSize(26)
-
         line(600,350,700,400)        
 
+    # prints right leg
     if counter >= 5:
-
         textSize(26)
-
         line(700,500,750,600) 
        
-
+    # prints left leg and switches to losing screen
     if counter >= 6:
-
         textSize(26)
         line(650,600,700,500) 
         open('Words.txt', 'w').close()
@@ -299,7 +306,7 @@ def design():
     line(700,200,700,100) 
     
 
-# resets the game values wen game is over and adds a delay before switching to the winner or loser screen
+# resets the game values when game is over and adds a delay before switching to the winner or loser screen
 def reset_game():
     global time_reset
 
@@ -327,17 +334,21 @@ def reset_game():
     incorrect_guessed_letter = None
     
     if mode == 5:
+        # plays winner sound 
         win_sound.play()
-
+        
         frame += 1
         if frame >= max_frame:
+            # adds animation to win screen 
             frame = 1
         print("(" + str(frame) + ")")
         image(loadImage("winning/(" + str (frame) + ").gif"), 245,200,500,300)
         textSize(50)
         fill(255)
         text("Congratulatios you guessed the word",10,600) 
-        text("YOU WON!", 375, 650)  
+        text("YOU WON!", 375, 650)
+          
+        # if the mouse curser goes over this box add a transparent square over box to show that the user can select it 
         if mouseX < 950 and mouseX > 800 and mouseY < 950 and mouseY > 850 and (mode == 5 or mode == 6):
             fill(255,200)
             rect(800,850,150,100,10)
@@ -345,7 +356,10 @@ def reset_game():
         
     else:
         
-        lose_sound.play()        
+        # plays loser sound 
+        lose_sound.play() 
+        
+        # adds animation to lose screen 
         frame2 += 1
         if frame2 >= max_frame2:
             frame2 = 1
@@ -356,6 +370,8 @@ def reset_game():
         text("That is unfortunate",230,600)
         text("You did not guess the word",150,650)
         text("YOU LOST!", 375, 700)
+        
+        # if the mouse curser goes over this box add a transparent square over box to show that the user can select it 
         if mouseX < 950 and mouseX > 800 and mouseY < 950 and mouseY > 850 and (mode == 5 or mode == 6):
             fill(255,200)
             rect(800,850,150,100,10)
@@ -364,7 +380,8 @@ def reset_game():
 # when a key is pressed                                
 def keyPressed(): 
     global mode ,word,word_is_in_list
-
+    
+    # when user has seleced the text box in mode 1 they want to add a word to the list they can press enter
     if key == ENTER and mode == 1 and select == True:
         if word in word_list:
             word = ''
@@ -385,7 +402,7 @@ def mousePressed():
     # checks clicks if it is in respective mode/menu
     global mode, selected_word, word_list,word_selected,word,guess,result,word_guess,counter, time_reset,select,colour,word_is_in_list
 
-   
+    # when button is pressed to start one of the words that were added will be randomly selected 
     if mouseX < 845 and mouseX > 705 and mouseY < 950 and mouseY > 850 and mode == 1 and word_is_in_list == True:
         mode = 3 
         selected_word = word_list[random.randint(0,len(word_list)-1)]
