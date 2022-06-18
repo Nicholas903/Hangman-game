@@ -290,7 +290,7 @@ def rules():
     textSize(20)
     text("1. The host is randomly chosen among the 2 players. If you are the host, create a list of words.", 20,200)
     text("2. The other player will attempt to guess the word that is randomly chosen by the computer.", 20, 250)
-    text("3. If the player incorrectly guesses 6 lettes that are not in the word, the game is over.",20, 300)
+    text("3. If the player incorrectly guesses 6 letters that are not in the word, the game is over.",20, 300)
     rect(750,700,200,100,10)
     textSize(60)
     fill(0)
