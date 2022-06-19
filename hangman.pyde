@@ -282,6 +282,7 @@ def menu():
 
 # rules menu design                  
 def rules():
+
     background(0)
     fill(0)
     textSize(120)
@@ -428,15 +429,13 @@ def mousePressed():
    
     # when pressed the first part of the game will begin 
     if mouseX < 450 and mouseX > 250 and mouseY < 600 and mouseY > 500 and mode == 0:
+        colour = 0
         mode = 1 
         return
      
     # when pressed will bring player to the rules page
     if mouseX < 770 and mouseX > 570 and mouseY < 600 and mouseY > 500 and mode == 0:
         mode = 2
-       
-
-
         return
 
     # retuns to menu
@@ -449,18 +448,17 @@ def mousePressed():
         open('Words.txt', 'w').close()
         word_is_in_list = False
         word_list = []
-
         mode = 0
-
         return
 
     # when clicked allows the player to enter in words
     if mouseX < 645 and mouseX > 345 and mouseY < 545 and mouseY > 455 and mode == 1:
         select = True
         colour = 255
-
+        
     else:
         select = False
         colour = 0
+
         
     
